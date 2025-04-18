@@ -1,6 +1,7 @@
 import 'package:chat/create_acount.dart';
 import 'package:flutter/material.dart';
 import 'password_field.dart';
+import 'chat_list_screen.dart';
 
 class LoginScreen extends StatelessWidget {
   const LoginScreen({super.key});
@@ -105,7 +106,15 @@ class LoginScreen extends StatelessWidget {
                             borderRadius: BorderRadius.circular(12),
                           ),
                         ),
-                        onPressed: () {},
+                        onPressed: () {
+                          // Navega para a lista de conversas
+                          Navigator.pushReplacement(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => const ChatListScreen(),
+                            ),
+                          );
+                        },
                         child: const Text(
                           "Entrar",
                           style: TextStyle(
