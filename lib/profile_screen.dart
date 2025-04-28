@@ -1,3 +1,4 @@
+import 'package:chat/auth_screen.dart';
 import 'package:flutter/material.dart';
 
 class ProfileScreen extends StatefulWidget {
@@ -88,7 +89,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
             // Botão de logout
             ElevatedButton.icon(
               onPressed: () {
-                // ação de logout
+                Navigator.of(context).pushAndRemoveUntil(
+                  MaterialPageRoute(builder: (context) => AuthScreen()),(route) => false,);
               },
               icon: const Icon(Icons.logout, color: Colors.white),
               label: const Text(
