@@ -1,4 +1,5 @@
-import 'package:chat/auth_screen.dart';
+import 'package:chat/chat_screen.dart';
+import 'package:chat/profile_screen.dart';
 import 'package:flutter/material.dart';
 
 class ChatListScreen extends StatelessWidget {
@@ -32,16 +33,17 @@ class ChatListScreen extends StatelessWidget {
         elevation: 0, // Retira a sombra do AppBar
         centerTitle: true, // Centraliza o título da AppBar
         leading: IconButton(
-          icon: const Icon(
-            Icons.arrow_back,
-            color: Colors.white,
-          ), // Ícone de voltar, Poderia ser um ícone de perfil do usuário, que, ao ser clicado, levaria a uma tela onde ele poderia alterar o nome, a senha e a foto de perfil.
+          icon: CircleAvatar(
+            backgroundColor: Colors.white,
+            child: Icon(
+              Icons.person,
+              color: Colors.blue, // ícone azul
+            ),
+          ),
           onPressed: () {
-            Navigator.pushReplacement(
+            Navigator.push(
               context,
-              MaterialPageRoute(
-                builder: (context) => const AuthScreen(),
-              ), // Navega para a tela de Login ao clicar
+              MaterialPageRoute(builder: (context) => const ProfileScreen()),
             );
           },
         ),
@@ -55,9 +57,12 @@ class ChatListScreen extends StatelessWidget {
         ),
         actions: <Widget>[
           IconButton(
-            icon: const Icon(
-              Icons.person_add,
-              color: Colors.white,
+            icon: const CircleAvatar(
+              backgroundColor: Colors.white,
+              child: Icon(
+                Icons.person_add,
+                color: Colors.blue, // ícone azul
+              ),
             ), // Ícone de adicionar pessoa
             onPressed: () {
               final emailController = TextEditingController();
@@ -118,21 +123,37 @@ class ChatListScreen extends StatelessWidget {
                                     onPressed: () {
                                       Navigator.of(context).pop();
                                     },
-                                    child: const Text('Cancelar'),
+                                    child: const Text(
+                                      'Cancelar',
+                                      style: TextStyle(
+                                        fontSize: 14,
+                                        color: Colors.white,
+                                        fontWeight: FontWeight.bold,
+                                      ),
+                                    ),
                                   ),
                                   ElevatedButton(
                                     onPressed: () {
                                       final email = emailController.text;
                                       if (email.isNotEmpty) {
                                         // Ação ao enviar a mensagem
-                                        print('Mensagem enviada para $email');
+                                        debugPrint(
+                                          'Mensagem enviada para $email',
+                                        );
                                         Navigator.of(context).pop();
                                       }
                                     },
                                     style: ElevatedButton.styleFrom(
                                       backgroundColor: Colors.blueAccent,
                                     ),
-                                    child: const Text('Enviar mensagem'),
+                                    child: const Text(
+                                      'Enviar mensagem',
+                                      style: TextStyle(
+                                        fontSize: 14,
+                                        color: Colors.white,
+                                        fontWeight: FontWeight.bold,
+                                      ),
+                                    ),
                                   ),
                                 ],
                               ),
@@ -239,7 +260,12 @@ class ChatListScreen extends StatelessWidget {
                 msg['time']!, // Hora da mensagem
                 style: const TextStyle(color: Colors.white60, fontSize: 12),
               ),
-              onTap: () {},
+              onTap: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => const ChatScreen()),
+                );
+              },
             ),
           );
         },
