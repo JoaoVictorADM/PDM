@@ -1,35 +1,50 @@
 import 'package:flutter/material.dart';
 import 'password_field.dart';
-import 'chat_list_screen.dart';
 
-class SignInScreen extends StatefulWidget {
+class SignUpScreen extends StatefulWidget {
   final VoidCallback onToggleForm;
 
-  const SignInScreen({super.key, required this.onToggleForm});
+  const SignUpScreen({super.key, required this.onToggleForm});
 
   @override
-  State<SignInScreen> createState() => _SignInScreenState();
+  State<SignUpScreen> createState() => _SignUpScreenState();
 }
 
-class _SignInScreenState extends State<SignInScreen> {
-  final _formKey = GlobalKey<FormState>(); // Chave global para o formulário
+class _SignUpScreenState extends State<SignUpScreen> {
+  // Controladores dos campos de texto
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
+  final TextEditingController _confirmPasswordController =
+      TextEditingController();
+  final TextEditingController _nameController = TextEditingController();
 
-  // Função para submeter o formulário
+  // Chave global para o formulário
+  final _formKey = GlobalKey<FormState>();
+
+  // Função para enviar o formulário
   void _submit() {
     if (_formKey.currentState!.validate()) {
-      // Se o formulário for válido, navega para a lista de conversas
-      Navigator.pushReplacement(
-        context,
-        MaterialPageRoute(builder: (context) => const ChatListScreen()),
-      );
+      debugPrint('Nome: ${_nameController.text}');
+      debugPrint('Email: ${_emailController.text}');
+      debugPrint('Senha: ${_passwordController.text}');
+      debugPrint('Confirmação Senha: ${_confirmPasswordController.text}');
     }
+  }
+
+  @override
+  void dispose() {
+    // Liberar os recursos dos controladores
+    _nameController.dispose();
+    _emailController.dispose();
+    _passwordController.dispose();
+    _confirmPasswordController.dispose();
+    super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
     return Form(
+      // Usando o widget Form aqui
       key: _formKey, // A chave global para o Form
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
@@ -37,7 +52,7 @@ class _SignInScreenState extends State<SignInScreen> {
           Icon(Icons.security, size: 50, color: Colors.white),
           const SizedBox(height: 15),
           const Text(
-            'Entre em sua\nConta',
+            'Criar uma conta',
             textAlign: TextAlign.center,
             style: TextStyle(
               fontSize: 26,
@@ -50,7 +65,7 @@ class _SignInScreenState extends State<SignInScreen> {
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               const Text(
-                "Não tem uma conta? ",
+                "Já tem uma conta? ",
                 style: TextStyle(color: Colors.white70),
               ),
               TextButton(
@@ -61,17 +76,37 @@ class _SignInScreenState extends State<SignInScreen> {
                 ),
                 onPressed: widget.onToggleForm,
                 child: const Text(
-                  "Cadastre-se",
+                  "Entrar",
                   style: TextStyle(color: Colors.blueAccent),
                 ),
               ),
             ],
           ),
-          const SizedBox(height: 20),
+          const SizedBox(height: 25),
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 30),
             child: Column(
               children: [
+                // Campo de Nome
+                TextFormField(
+                  controller: _nameController, // Associando o controlador
+                  decoration: InputDecoration(
+                    filled: true,
+                    fillColor: Colors.white,
+                    prefixIcon: const Icon(Icons.person),
+                    hintText: 'Nome',
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(12),
+                    ),
+                  ),
+                  validator: (value) {
+                    if (value == null || value.isEmpty) {
+                      return 'O nome é obrigatório';
+                    }
+                    return null;
+                  },
+                ),
+                const SizedBox(height: 15),
                 // Campo de Email
                 TextFormField(
                   controller: _emailController,
@@ -102,25 +137,28 @@ class _SignInScreenState extends State<SignInScreen> {
                   controller: _passwordController,
                   validator: (value) {
                     if (value == null || value.isEmpty) {
-                      return 'A confirmação de senha é obrigatória';
+                      return 'A senha é obrigatória';
                     }
                     return null;
                   },
                 ),
-                TextButton(
-                  onPressed: () {},
-                  child: Text(
-                    "Esqueceu sua senha?",
-                    style: TextStyle(
-                      color: Colors.white,
-                      decoration: TextDecoration.underline,
-                      decorationColor: Colors.white,
-                      decorationThickness: 1.0,
-                    ),
-                  ),
+                const SizedBox(height: 15),
+                // Campo de Confirmar Senha
+                PasswordField(
+                  hintText: "Repita a senha",
+                  controller: _confirmPasswordController,
+                  validator: (value) {
+                    if (value == null || value.isEmpty) {
+                      return 'A confirmação de senha é obrigatória';
+                    }
+                    if (value != _passwordController.text) {
+                      return 'As senhas não coincidem';
+                    }
+                    return null;
+                  },
                 ),
                 const SizedBox(height: 25),
-                // Botão de Entrar
+                // Botão de Enviar
                 SizedBox(
                   width: double.infinity,
                   child: ElevatedButton(
@@ -131,11 +169,11 @@ class _SignInScreenState extends State<SignInScreen> {
                         borderRadius: BorderRadius.circular(12),
                       ),
                     ),
-                    onPressed: _submit, // Submete o formulário
+                    onPressed: _submit, // Chama a função para validar e enviar
                     child: const Text(
-                      "Entrar",
+                      "Criar Conta",
                       style: TextStyle(
-                        fontSize: 14,
+                        fontSize: 16,
                         color: Colors.white,
                         fontWeight: FontWeight.bold,
                       ),

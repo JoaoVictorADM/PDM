@@ -1,5 +1,5 @@
-import 'package:chat/sign_in_screen.dart';
-import 'package:chat/sign_up_screen.dart';
+import 'package:chat/UI/widgets/sign_in_screen.dart';
+import 'package:chat/UI/widgets/sign_up_screen.dart';
 import 'package:flutter/material.dart';
 
 class AuthScreen extends StatefulWidget {
