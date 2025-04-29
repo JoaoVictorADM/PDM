@@ -1,5 +1,6 @@
-import 'package:chat/chat_screen.dart';
-import 'package:chat/profile_screen.dart';
+import 'package:chat/UI/chat_screen.dart';
+import 'package:chat/UI/profile_screen.dart';
+import 'widgets/contact_card.dart';
 import 'package:flutter/material.dart';
 
 class ChatListScreen extends StatelessWidget {
@@ -8,7 +9,7 @@ class ChatListScreen extends StatelessWidget {
   // Lista de mensagens de exemplo, com um mapa contendo o nome, mensagem e hora de cada conversa.
   final List<Map<String, String>> messages = const [
     {'name': 'João', 'message': 'joinha', 'time': '10:30'},
-    {'name': 'Thomas', 'message': 'lol Bora?', 'time': '09:15'},
+    {'name': 'Thomas', 'message': 'lol Bora!', 'time': '09:15'},
     {'name': 'Ale', 'message': 'Oi, tudo bem?', 'time': '12:00'},
     {'name': 'Lucas', 'message': 'Vamos jogar mais tarde?', 'time': '13:45'},
     {'name': 'Ana', 'message': 'Já viu o novo filme?', 'time': '15:20'},
@@ -219,54 +220,13 @@ class ChatListScreen extends StatelessWidget {
         ),
       ),
       body: ListView.builder(
-        itemCount:
-            messages
-                .length, // Quantidade de itens na lista (tamanho da lista de mensagens)
+        itemCount: messages.length,
         itemBuilder: (context, index) {
-          final msg = messages[index]; // Acessa o item da lista
-          return Card(
-            color: const Color(
-              0xFF1A1A2E,
-            ), // Cor do cartão de cada item da lista
-            margin: const EdgeInsets.symmetric(
-              horizontal: 12,
-              vertical: 6,
-            ), // Espaçamento ao redor do cartão
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(
-                12,
-              ), // Arredonda os cantos do cartão
-            ),
-            child: ListTile(
-              leading: const CircleAvatar(
-                backgroundColor: Colors.blueAccent, // Cor do avatar
-                child: Icon(
-                  Icons.person,
-                  color: Colors.white,
-                ), // Ícone do avatar, trocar por uma imagem
-              ),
-              title: Text(
-                msg['name']!, // Nome da pessoa
-                style: const TextStyle(
-                  color: Colors.white,
-                  fontWeight: FontWeight.bold,
-                ),
-              ),
-              subtitle: Text(
-                msg['message']!, // Mensagem
-                style: const TextStyle(color: Colors.white70),
-              ),
-              trailing: Text(
-                msg['time']!, // Hora da mensagem
-                style: const TextStyle(color: Colors.white60, fontSize: 12),
-              ),
-              onTap: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (context) => const ChatScreen()),
-                );
-              },
-            ),
+          final msg = messages[index];
+          return ContactCard(
+            name: msg['name']!,
+            message: msg['message']!,
+            time: msg['time']!,
           );
         },
       ),

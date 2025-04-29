@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'messages.dart'; // sua classe Message
+import '../model/messages.dart'; // sua classe Message
 
 class ChatScreen extends StatefulWidget {
   const ChatScreen({super.key});
